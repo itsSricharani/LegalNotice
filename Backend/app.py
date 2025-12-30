@@ -4,47 +4,28 @@ import os
 import PyPDF2
 from openai import OpenAI
 import re
+import json
 
-# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
-
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @app.route("/")
 def home():
     return "Backend running"
 
-# ---------- RULE-BASED LOGIC ----------
-def rule_based_analysis(text):
-    text_lower = text.lower()
+# ---------- DEADLINE (RULE-BASED) ----------
+def extract_deadline(text):
+    match = re.search(r'within\s+(\d+)\s+days', text.lower())
+    if match:
+        return f"Within {match.group(1)} days"
+    return "Not found"
 
-    summary_fallback = "This notice asks you to take some action mentioned in the notice."
-    intent = "Unknown"
-    deadline = "Not found"
-    risk = "Unknown"
+# ---------- AI EXTRACTION ----------
+def ai_extract_fields(text):
+    
 
-    if "rent" in text_lower:
-        intent = "Recover unpaid rent"
-        summary_fallback = "This notice is asking for payment of pending rent."
-
-    deadline_match = re.search(r'within\s+(\d+)\s+days', text_lower)
-    if deadline_match:
-        deadline = f"Within {deadline_match.group(1)} days"
-
-    if "legal action" in text_lower or "court" in text_lower or "suit" in text_lower:
-        risk = "High"
-    elif "action may be taken" in text_lower or "action might be taken" in text_lower:
-        risk = "Medium"
-    elif "notice" in text_lower:
-        risk = "Low"
-
-
-    return summary_fallback, intent, deadline, risk
-
-# ---------- AI SUMMARY ----------
-def ai_summary(text):
     try:
         response = client.chat.completions.create(
             model="gpt-4o-mini",
@@ -52,18 +33,33 @@ def ai_summary(text):
                 {
                     "role": "system",
                     "content": (
-                        "Explain the following legal notice in simple language for a common person. "
-                        "Do not give legal advice. Do not add information. "
-                        "Only explain what it means."
+                        "Extract information from the legal notice.\n\n"
+                        "Return ONLY valid JSON with these keys:\n"
+                        "intent (5–6 words), summary (10–15 words), risk (Low, Medium, or High).\n\n"
+                        "Do not add extra text."
                     )
                 },
                 {"role": "user", "content": text}
             ],
             max_tokens=120
         )
-        return response.choices[0].message.content.strip()
-    except Exception:
-        return None
+
+        content = response.choices[0].message.content.strip()
+        print("RAW AI OUTPUT:\n", content)
+        data = json.loads(content)
+
+        intent = data.get("intent", "Unknown")
+        summary = data.get("summary", "Unknown")
+        risk = data.get("risk", "Unknown")
+
+        if risk not in ["Low", "Medium", "High"]:
+            risk = "Unknown"
+
+        return intent, summary, risk
+
+    except Exception as e:
+        print("AI extraction failed:", e)
+        return "Unknown", "Unknown", "Unknown"
 
 # ---------- TEXT ANALYSIS ----------
 @app.route("/analyze", methods=["POST"])
@@ -74,16 +70,16 @@ def analyze_text():
     if not text or len(text) < 20:
         return jsonify({
             "summary": "Insufficient information to analyze notice.",
+            "intent": "Unknown",
+            "deadline": "Not found",
             "risk": "Unknown"
         })
 
-    fallback_summary, intent, deadline, risk = rule_based_analysis(text)
-
-    ai_result = ai_summary(text)
-    final_summary = ai_result if ai_result else fallback_summary
+    deadline = extract_deadline(text)
+    intent, summary, risk = ai_extract_fields(text)
 
     return jsonify({
-        "summary": final_summary,
+        "summary": summary,
         "intent": intent,
         "deadline": deadline,
         "risk": risk
@@ -103,24 +99,22 @@ def analyze_pdf():
         extracted = page.extract_text()
         if extracted:
             text += extracted + "\n"
+
     print("Extracted length:", len(text))
 
-    if not text or len(text) < 20:
+    if len(text.strip()) == 0:
         return jsonify({
-            "summary": "Insufficient information to analyze notice.",
+            "summary": "The PDF is not text-extractable.",
             "intent": "Unknown",
             "deadline": "Not found",
             "risk": "Unknown"
         })
-    
 
-    fallback_summary, intent, deadline, risk = rule_based_analysis(text)
-
-    ai_result = ai_summary(text)
-    final_summary = ai_result if ai_result else fallback_summary
+    deadline = extract_deadline(text)
+    intent, summary, risk = ai_extract_fields(text)
 
     return jsonify({
-        "summary": final_summary,
+        "summary": summary,
         "intent": intent,
         "deadline": deadline,
         "risk": risk
