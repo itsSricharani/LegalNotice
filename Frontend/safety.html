@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Safety</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <div class="logo">
+        <a href="index.html">
+            <img src="logo.png" alt="Logo">
+        </a>
+    </div>
+    <nav>
+        <a href="explore.html">Explore</a>
+        <a href="guidelines.html">Guidelines</a>
+        <a href="safety.html">Safety</a>
+    </nav>
+</header>
+
+<main class="content">
+    <h1>Your privacy, our priority.</h1>
+
+    <p>
+        Any text or document you submit is processed only for analysis and is not
+        stored, logged, or shared.
+    </p>
+
+    <p>
+        Uploaded files are handled temporarily and discarded after processing.
+        We do not maintain user histories or retain legal documents.
+    </p>
+
+    <p>
+        This platform is designed with privacy-first principles in mind.
+    </p>
+</main>
+<script>
+    window.addEventListener("load", () => {
+        document.body.classList.add("loaded");
+    });
+
+    document.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", event => {
+            const href = link.getAttribute("href");
+
+            if (href && !href.startsWith("#")) {
+                event.preventDefault();
+                document.body.classList.remove("loaded");
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 300);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

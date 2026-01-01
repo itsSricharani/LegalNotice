@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Guidelines</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <div class="logo">
+        <a href="index.html">
+            <img src="logo.png" alt="Logo">
+        </a>
+    </div>
+    <nav>
+        <a href="explore.html">Explore</a>
+        <a href="guidelines.html">Guidelines</a>
+        <a href="safety.html">Safety</a>
+    </nav>
+</header>
+
+<main class="content">
+    <h1>Usage Guidelines</h1>
+
+    <p>
+        This platform is intended to help users understand legal notices in simple,
+        plain language. It does not replace professional legal consultation.
+    </p>
+
+    <p>
+        The explanations provided are informational in nature and are generated
+        using automated analysis. They may not capture every legal nuance.
+    </p>
+
+    <p>
+        Users are advised to consult a qualified legal professional for formal
+        advice or legal action.
+    </p>
+</main>
+
+<script>
+    window.addEventListener("load", () => {
+        document.body.classList.add("loaded");
+    });
+
+    document.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", event => {
+            const href = link.getAttribute("href");
+
+            if (href && !href.startsWith("#")) {
+                event.preventDefault();
+                document.body.classList.remove("loaded");
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 300);
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>

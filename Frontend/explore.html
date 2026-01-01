@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Explore</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <div class="logo">
+        <a href="index.html">
+            <img src="logo.png" alt="Logo">
+        </a>
+    </div>
+    <nav>
+        <a href="explore.html">Explore</a>
+        <a href="guidelines.html">Guidelines</a>
+        <a href="safety.html">Safety</a>
+    </nav>
+</header>
+
+<main class="content">
+    <h1>Explore</h1>
+    <p>Content coming soon.</p>
+</main>
+
+<script>
+    window.addEventListener("load", () => {
+        document.body.classList.add("loaded");
+    });
+
+    document.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", event => {
+            const href = link.getAttribute("href");
+
+            if (href && !href.startsWith("#")) {
+                event.preventDefault();
+                document.body.classList.remove("loaded");
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 300);
+            }
+        });
+    });
+</script>
+
+
+</body>
+</html>

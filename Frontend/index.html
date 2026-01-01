@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Legal Notices, Explained Clearly</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <header class="top-bar">
+        <div class="logo">
+            <a href="index.html">
+                <img src="logo.png" alt="Logo">
+            </a>
+        </div>
+        <nav>
+            <a href="explore.html">Explore</a>
+            <a href="guidelines.html">Guidelines</a>
+            <a href="safety.html">Safety</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <main class="hero">
+        <div class="hero-text">
+            <h1>LEGAL NOTICES,<br>EXPLAINED CLEARLY.</h1>
+            <p>
+                A simple platform that explains legal notices in plain language,
+                highlights deadlines, and shows potential risks — without legal advice.
+            </p>
+            <a href="analyze.html" class="primary-btn">Try Now!</a>
+
+        </div>
+
+        <div class="hero-visual notice-image">
+            <img src="comdoc.png" alt="Complex Legal Notice" class="img-base">
+            <img src="simdoc.png" alt="Simplified Legal Notice" class="img-hover">
+        </div>
+    </main>
+
+<section class="feature-section">
+    <h2>Clear Simplification</h2>
+    <p>
+        Legal notices are often written to intimidate, confuse, or overwhelm.
+        Our platform breaks them down into clear summaries, explicit deadlines,
+        identifiable intent, and potential risk — so you understand what is
+        being asked of you, without legal jargon.
+    </p>
+</section>
+
+<section class="feature-section alt">
+    <h2>One Tool, Multiple Uses</h2>
+    <p>
+        From rent disputes and payment demands to government notices, compliance
+        reminders, and contractual warnings — a wide range of legal documents
+        can be simplified using a single interface.
+    </p>
+</section>
+
+<section class="feature-section">
+    <h2>Your Privacy, Our Priority</h2>
+    <p>
+        Documents and text submitted for analysis are not stored, indexed,
+        or tracked. Processing happens only to generate results, after which
+        the data is discarded. Your information remains private and under
+        your control.
+    </p>
+</section>
+
+<section class="feature-section alt">
+    <h2>Accessible by Design</h2>
+    <p>
+        The platform supports English, Hindi, and Telugu — including content
+        written in native scripts or English transliteration.
+        A built-in voice feature can read simplified outputs aloud,
+        improving accessibility for users who prefer listening over reading.
+        Additional languages will be introduced in future updates.
+    </p>
+</section>
+
+
+<script>
+    window.addEventListener("load", () => {
+        document.body.classList.add("loaded");
+    });
+
+    document.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", event => {
+            const href = link.getAttribute("href");
+
+            if (href && !href.startsWith("#")) {
+                event.preventDefault();
+                document.body.classList.remove("loaded");
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 300);
+            }
+        });
+    });
+</script>
+
+<footer class="footer-ribbon">
+    <p>
+        Contact: support@legalsimplify.in &nbsp; | &nbsp;
+        Academic Project &nbsp; | &nbsp;
+        Not Legal Advice
+    </p>
+</footer>
+
+
+</body>
+</html>
