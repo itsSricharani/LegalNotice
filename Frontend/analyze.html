@@ -15,41 +15,38 @@
     </div>
 </header>
 
-<section class="content">
-    <h1>Analyze a Legal Notice</h1>
+<<main class="hero">
+    <div class="hero-text">
+        <h1>Analyze a Legal Notice</h1>
 
-    <p>
-        Paste the legal notice text below or upload a PDF document.
-        The system will extract key information in simple language.
-    </p>
+        <p>
+            Paste the legal notice text below or upload a PDF document.
+            The system will extract key information in simple language.
+        </p>
 
-    <textarea id="noticeText" placeholder="Paste legal notice text here..."></textarea>
+        <textarea id="noticeText"
+                  placeholder="Paste legal notice text here..."></textarea>
 
-    <div class="file-input">
-        <input type="file" id="pdfFile" accept=".pdf">
+        <div class="file-input">
+            <input type="file" id="pdfFile" accept=".pdf">
+        </div>
+
+        <button class="primary-btn" onclick="analyzeNotice()">Analyze</button>
     </div>
 
-    <button class="primary-btn" onclick="analyzeNotice()">Analyze</button>
+    <div class="hero-visual notice-image">
+        <img src="comdoc.png" class="img-base">
+        <img src="simdoc.png" class="img-hover">
+    </div>
+</main>
 
+<section class="content">
     <div id="results" class="results hidden">
-        <div class="result-box">
-            <h3>Summary</h3>
-            <p id="summary"></p>
-        </div>
-        <div class="result-box">
-            <h3>Intent</h3>
-            <p id="intent"></p>
-        </div>
-        <div class="result-box">
-            <h3>Deadline</h3>
-            <p id="deadline"></p>
-        </div>
-        <div class="result-box">
-            <h3>Risk</h3>
-            <p id="risk"></p>
-        </div>
+        ...
     </div>
 </section>
+
+
 
 <script>
 async function analyzeNotice() {

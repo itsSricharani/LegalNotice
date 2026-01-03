@@ -49,10 +49,11 @@ body.loaded{
 }
 
 .hero {
+    min-height: 100vh;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 80px 100px;
+    padding: 3rem 5rem;
 }
 
 .hero-text {
@@ -259,3 +260,9 @@ textarea {
     display: none;
 }
 
+#noticeText {
+    width: 100%;
+    min-height: 140px;
+    max-height: 220px;
+    resize: vertical;
+}
