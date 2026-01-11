@@ -143,12 +143,9 @@ async function analyzeNotice() {
 
     const data = await response.json();
 
-    document.getElementById("summary").innerText = data.summary || "Unknown";
-    document.getElementById("intent").innerText = data.intent || "Unknown";
-    document.getElementById("deadline").innerText = data.deadline || "Not found";
-    document.getElementById("risk").innerText = data.risk || "Unknown";
+    sessionStorage.setItem("analysisResult", JSON.stringify(data));
+    window.location.href = "results.html";
 
-    document.getElementById("results").classList.remove("hidden");
 }
 </script>
 

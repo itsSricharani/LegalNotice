@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Analysis Result</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-bar">
+    <div class="logo">
+        <a href="index.html">
+            <img src="logo.png" alt="Logo">
+        </a>
+    </div>
+</header>
+
+<section class="content">
+    <h1>Legal Notice Analysis</h1>
+
+    <div class="results">
+        <div class="result-box">
+            <h3>Summary</h3>
+            <p id="summary"></p>
+        </div>
+
+        <div class="result-box">
+            <h3>Intent</h3>
+            <p id="intent"></p>
+        </div>
+
+        <div class="result-box">
+            <h3>Deadline</h3>
+            <p id="deadline"></p>
+        </div>
+
+        <div class="result-box">
+            <h3>Risk</h3>
+            <p id="risk"></p>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const storedData = sessionStorage.getItem("analysisResult");
+
+    if (!storedData) {
+        alert("No analysis data found. Please analyze a notice first.");
+        window.location.href = "analyze.html";
+        return;
+    }
+
+    const data = JSON.parse(storedData);
+
+    document.getElementById("summary").innerText = data.summary || "Unknown";
+    document.getElementById("intent").innerText = data.intent || "Unknown";
+    document.getElementById("deadline").innerText = data.deadline || "Not found";
+    document.getElementById("risk").innerText = data.risk || "Unknown";
+});
+</script>
+
+<script>
+window.addEventListener("load", () => {
+    document.body.classList.add("loaded");
+});
+</script>
+
+
+</body>
+</html>
