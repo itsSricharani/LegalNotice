@@ -15,7 +15,7 @@
     </div>
 </header>
 
-<<main class="hero">
+<main class="hero">
     <div class="hero-text">
         <h1>Analyze a Legal Notice</h1>
 
@@ -31,7 +31,8 @@
             <input type="file" id="pdfFile" accept=".pdf">
         </div>
 
-        <button class="primary-btn" onclick="analyzeNotice()">Analyze</button>
+        <!-- ONLY CHANGE: button now opens captcha -->
+        <button class="primary-btn" onclick="openCaptcha()">Analyze</button>
     </div>
 
     <div class="hero-visual notice-image">
@@ -42,11 +43,75 @@
 
 <section class="content">
     <div id="results" class="results hidden">
-        ...
+        <div class="result-box">
+            <h3>Summary</h3>
+            <p id="summary"></p>
+        </div>
+        <div class="result-box">
+            <h3>Intent</h3>
+            <p id="intent"></p>
+        </div>
+        <div class="result-box">
+            <h3>Deadline</h3>
+            <p id="deadline"></p>
+        </div>
+        <div class="result-box">
+            <h3>Risk</h3>
+            <p id="risk"></p>
+        </div>
     </div>
 </section>
 
+<!-- CAPTCHA MODAL (NEW, isolated) -->
+<div id="captchaOverlay" class="captcha-overlay">
+    <div class="captcha-modal">
+        <h3>Verify you are human</h3>
 
+        <div id="captchaText" class="captcha-display"></div>
+
+        <input
+            type="text"
+            id="captchaInput"
+            placeholder="Enter the code"
+        />
+
+        <button onclick="validateCaptcha()">Verify</button>
+
+        <p id="captchaResult" class="captcha-result"></p>
+    </div>
+</div>
+
+<script>
+let captcha = "";
+
+/* OPEN CAPTCHA */
+function openCaptcha() {
+    document.getElementById("captchaOverlay").style.display = "flex";
+    document.getElementById("captchaResult").innerText = "";
+    document.getElementById("captchaInput").value = "";
+    generateCaptcha();
+}
+
+/* GENERATE CAPTCHA */
+function generateCaptcha() {
+    captcha = Math.floor(1000 + Math.random() * 9000).toString();
+    document.getElementById("captchaText").innerText = captcha;
+}
+
+/* VALIDATE CAPTCHA */
+function validateCaptcha() {
+    const userInput = document.getElementById("captchaInput").value.trim();
+
+    if (userInput === captcha) {
+        document.getElementById("captchaOverlay").style.display = "none";
+        analyzeNotice();   // existing logic, untouched
+    } else {
+        document.getElementById("captchaResult").innerText =
+            "Incorrect code. Please try again.";
+        generateCaptcha();
+    }
+}
+</script>
 
 <script>
 async function analyzeNotice() {
@@ -88,9 +153,9 @@ async function analyzeNotice() {
 </script>
 
 <script>
-    window.addEventListener("load", () => {
-        document.body.classList.add("loaded");
-    });
+window.addEventListener("load", () => {
+    document.body.classList.add("loaded");
+});
 </script>
 
 </body>
