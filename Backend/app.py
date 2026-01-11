@@ -25,41 +25,41 @@ def rule_based_analysis(text):
 
     # INTENT DETECTION (broader)
     if "rent" in text_lower or "lease" in text_lower:
-        intent = "Recovery of unpaid rent"
+        intent = "The intent is Recovery of unpaid rent"
         summary = "The notice demands payment of pending rent or lease dues."
 
     elif "electricity" in text_lower or "bill" in text_lower or "outstanding" in text_lower or "pending dues" in text_lower :
-        intent = "Payment of pending dues"
+        intent = "The intent is Payment of pending dues"
         summary = "The notice demands payment of outstanding dues or bills."
 
 
     elif "loan" in text_lower or "emi" in text_lower or "interest" in text_lower or "bank" in text_lower:
-        intent = "Loan repayment demand"
+        intent = "The intent is Loan repayment demand"
         summary = "The notice demands repayment of a loan or instalments."
     
     elif "breach" in text_lower or "non-fulfilment" in text_lower or "terminat" in text_lower:
-        intent = "Contract or agreement violation"
+        intent = "The intent is Contract or agreement violation"
         summary = "The notice refers to a breach or violation of agreed terms."
 
     elif "non-compliance" in text_lower or "penalty" in text_lower or "violation of regulation" in text_lower or "statutory" in text_lower:
-        intent = "Compliance violation"
+        intent = "The intent is Compliance violation"
         summary = "The notice highlights a regulatory or statutory compliance issue."
     
     elif "traffic" in text_lower or "vehicle" in text_lower or "registration" in text_lower or "fine" in text_lower:
-        intent = "Traffic or vehicle fine"
+        intent = "The Intent is Traffic or vehicle fine"
         summary = "The notice informs about a traffic or vehicle fine."
 
     elif "defaulter" in text_lower or "recovery" in text_lower or "final notice" in text_lower:
-        intent = "Recovery / defaulter demand"
+        intent = "The Intent is Recovery / defaulter demand"
         summary = "The notice demands settlement of overdue accounts."
 
     # RISK ASSESSMENT (expanded)
     if "legal action" in text_lower or "court" in text_lower or "suit" in text_lower or "liable" in text_lower or  "proceedings" in text_lower or "penalty" in text_lower:
-        risk = "High"
+        risk = "The Risk Factor is High"
     elif "failure to comply" in text_lower or "will be initiated" in text_lower:
-        risk = "Medium"
+        risk = "The Risk Factor is Medium"
     else:
-        risk = "Low"
+        risk = "The Risk Factor is Low"
 
     return intent, summary, risk
 

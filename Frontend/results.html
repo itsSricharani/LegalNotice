@@ -20,22 +20,31 @@
 
     <div class="results">
         <div class="result-box">
-            <h3>Summary</h3>
+            <h3>Summary
+                <button class="speaker-btn" onclick="speakText('summary')">🔊</button>
+            </h3>
             <p id="summary"></p>
+            
         </div>
 
         <div class="result-box">
-            <h3>Intent</h3>
+            <h3>Intent
+                <button class="speaker-btn" onclick="speakText('intent')">🔊</button>
+            </h3>
             <p id="intent"></p>
         </div>
 
         <div class="result-box">
-            <h3>Deadline</h3>
+            <h3>Deadline
+                <button class="speaker-btn" onclick="speakText('deadline')">🔊</button>
+            </h3>
             <p id="deadline"></p>
         </div>
 
         <div class="result-box">
-            <h3>Risk</h3>
+            <h3>Risk
+                <button class="speaker-btn" onclick="speakText('risk')">🔊</button>
+            </h3>
             <p id="risk"></p>
         </div>
     </div>
@@ -64,6 +73,20 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("load", () => {
     document.body.classList.add("loaded");
 });
+</script>
+
+<script>
+function speakText(elementId) {
+    const text = document.getElementById(elementId).innerText.trim();
+    if (!text) return;
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-IN";   // Fixed to English (India)
+
+    // Stop any ongoing speech before starting new one
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+}
 </script>
 
 
