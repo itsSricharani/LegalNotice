@@ -81,9 +81,9 @@ function speakText(elementId) {
     if (!text) return;
 
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "en-IN";   // Fixed to English (India)
+    utterance.lang = "en-IN";   
 
-    // Stop any ongoing speech before starting new one
+    
     window.speechSynthesis.cancel();
     window.speechSynthesis.speak(utterance);
 }

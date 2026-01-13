@@ -9,7 +9,7 @@ print("TEXT NOTICE RESPONSE:")
 print(response.json())
 
 
-pdf_file_path = r"C:\Users\Sricharani Vemparala\Documents\SampleLegalNotice1.pdf"  # Replace with your PDF path
+pdf_file_path = r"C:\Users\Sricharani Vemparala\Documents\SampleLegalNotice1.pdf"  
 
 with open(pdf_file_path, "rb") as f:
     files = {"file": f}

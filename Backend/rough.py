@@ -29,7 +29,6 @@ def rule_based_analysis(text):
     intent = "Unknown"
     risk = "Unknown"
 
-    # INTENT DETECTION (broader)
     if "rent" in text_lower or "lease" in text_lower:
         intent = "The intent is Recovery of unpaid rent"
         summary = "The notice demands payment of pending rent or lease dues."
@@ -59,7 +58,7 @@ def rule_based_analysis(text):
         intent = "The Intent is Recovery / defaulter demand"
         summary = "The notice demands settlement of overdue accounts."
 
-    # RISK ASSESSMENT (expanded)
+    
     if "legal action" in text_lower or "court" in text_lower or "suit" in text_lower or "liable" in text_lower or  "proceedings" in text_lower or "penalty" in text_lower:
         risk = "The Risk Factor is High"
     elif "failure to comply" in text_lower or "will be initiated" in text_lower:
@@ -131,7 +130,7 @@ def analyze_text():
             "risk": "Unknown"
         })
 
-    # Try AI first, fallback to rule-based
+   
     try:
         ai_result = ai_based_analysis(text)
         return jsonify(ai_result)

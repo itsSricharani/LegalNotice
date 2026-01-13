@@ -15,9 +15,6 @@ OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 def home():
     return "Backend running (AI + rule-based fallback mode)"
 
-# -------------------------
-# RULE-BASED LOGIC (UNCHANGED)
-# -------------------------
 
 def extract_deadline(text):
     match = re.search(r'within\s+(\d+)\s+days', text.lower())
@@ -61,9 +58,6 @@ def rule_based_analysis(text):
 
     return intent, summary, risk
 
-# -------------------------
-# AI ANALYSIS (NEW)
-# -------------------------
 
 def ai_analysis(text):
     headers = {
@@ -119,9 +113,6 @@ def ai_analysis(text):
     }
 
 
-# -------------------------
-# TEXT ANALYSIS ENDPOINT
-# -------------------------
 
 @app.route("/analyze", methods=["POST"])
 def analyze_text():
@@ -159,9 +150,6 @@ def analyze_text():
         
     })
 
-# -------------------------
-# PDF ANALYSIS ENDPOINT
-# -------------------------
 
 @app.route("/analyze-pdf", methods=["POST"])
 def analyze_pdf():

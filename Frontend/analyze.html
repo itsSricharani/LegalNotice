@@ -37,7 +37,7 @@
             <input type="file" id="pdfFile" accept=".pdf">
         </div>
 
-        <!-- ONLY CHANGE: button now opens captcha -->
+        
         <button class="primary-btn" onclick="openCaptcha()">Analyze</button>
     </div>
 
@@ -68,7 +68,7 @@
     </div>
 </section>
 
-<!-- CAPTCHA MODAL (NEW, isolated) -->
+<
 <div id="captchaOverlay" class="captcha-overlay">
     <div class="captcha-modal">
         <h3>Verify you are human</h3>
@@ -90,7 +90,7 @@
 <script>
 let captcha = "";
 
-/* OPEN CAPTCHA */
+
 function openCaptcha() {
     document.getElementById("captchaOverlay").style.display = "flex";
     document.getElementById("captchaResult").innerText = "";
@@ -98,19 +98,23 @@ function openCaptcha() {
     generateCaptcha();
 }
 
-/* GENERATE CAPTCHA */
 function generateCaptcha() {
     captcha = Math.floor(1000 + Math.random() * 9000).toString();
     document.getElementById("captchaText").innerText = captcha;
 }
 
-/* VALIDATE CAPTCHA */
+
 function validateCaptcha() {
     const userInput = document.getElementById("captchaInput").value.trim();
+    
 
     if (userInput === captcha) {
         document.getElementById("captchaOverlay").style.display = "none";
-        analyzeNotice();   // existing logic, untouched
+        const loading = document.getElementById("loadingOverlay");
+        loading.style.display = "flex";
+        startLoadingPhrases();
+        analyzeNotice();   
+
     } else {
         document.getElementById("captchaResult").innerText =
             "Incorrect code. Please try again.";
@@ -150,6 +154,8 @@ async function analyzeNotice() {
     const data = await response.json();
 
     sessionStorage.setItem("analysisResult", JSON.stringify(data));
+    document.getElementById("loadingOverlay").style.display = "none";
+    stopLoadingPhrases();
     window.location.href = "results.html";
 
 }
@@ -159,6 +165,41 @@ async function analyzeNotice() {
 window.addEventListener("load", () => {
     document.body.classList.add("loaded");
 });
+</script>
+
+<div id="loadingOverlay" class="loading-overlay">
+    <div class="loading-modal">
+        <div class="loading-icons">
+            <span class="loading-icon">📄</span>
+            <span class="loading-icon">🔍</span>
+            <span class="loading-icon">⚡</span>
+        </div>
+        <p id="loadingPhrase">Analyzing your document...</p>
+    </div>
+</div>
+<script>
+    const phrases = [
+        "Analyzing your document...",
+        "Checking for inconsistencies...",
+        "Summarizing key points...",
+        "Almost there...",
+        "Preparing your results..."
+    ];
+
+    let phraseIndex = 0;
+    let phraseInterval;
+
+    function startLoadingPhrases() {
+        const phraseEl = document.getElementById("loadingPhrase");
+        phraseInterval = setInterval(() => {
+            phraseIndex = (phraseIndex + 1) % phrases.length;
+            phraseEl.innerText = phrases[phraseIndex];
+        }, 1500); 
+    }
+
+    function stopLoadingPhrases() {
+        clearInterval(phraseInterval);
+    }
 </script>
 
 </body>
