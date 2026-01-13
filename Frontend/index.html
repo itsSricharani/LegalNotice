@@ -15,13 +15,24 @@
             </a>
         </div>
         <nav>
-            <a href="explore.html">Explore</a>
+            <a href="index.html">Home</a>
+
+            <div class="language-selector">
+                <button id="languageBtn">Language</button>
+                <ul class="language-dropdown">
+                    <li data-lang="en">English</li>
+                    <li data-lang="hi">हिंदी</li>
+                    <li data-lang="te">తెలుగు</li>
+                </ul>
+            </div>
+
             <a href="guidelines.html">Guidelines</a>
             <a href="safety.html">Safety</a>
         </nav>
+
     </header>
 
-    <!-- Hero Section -->
+    
     <main class="hero">
         <div class="hero-text">
             <h1>LEGAL NOTICES,<br>EXPLAINED CLEARLY.</h1>
@@ -39,15 +50,6 @@
         </div>-->
     </main>
 
-<section class="feature-section">
-    <h2>Clear Simplification</h2>
-    <p>
-        Legal notices are often written to intimidate, confuse, or overwhelm.
-        Our platform breaks them down into clear summaries, explicit deadlines,
-        identifiable intent, and potential risk — so you understand what is
-        being asked of you, without legal jargon.
-    </p>
-</section>
 
 <section class="feature-section alt">
     <h2>One Tool, Multiple Uses</h2>
@@ -107,6 +109,36 @@
         Not Legal Advice
     </p>
 </footer>
+
+<script>
+const languageTexts = ["Language", "भाषा", "భాష"];
+let langIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+const btn = document.getElementById("languageBtn");
+
+function typeEffect() {
+    const current = languageTexts[langIndex];
+    if (!isDeleting) {
+        btn.textContent = current.substring(0, charIndex + 1);
+        charIndex++;
+        if (charIndex === current.length) {
+            setTimeout(() => isDeleting = true, 1000);
+        }
+    } else {
+        btn.textContent = current.substring(0, charIndex - 1);
+        charIndex--;
+        if (charIndex === 0) {
+            isDeleting = false;
+            langIndex = (langIndex + 1) % languageTexts.length;
+        }
+    }
+    setTimeout(typeEffect, isDeleting ? 80 : 120);
+}
+
+typeEffect();
+</script>
+
 
 
 </body>

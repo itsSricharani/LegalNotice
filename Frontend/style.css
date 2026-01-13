@@ -4,6 +4,14 @@
     padding: 0;
     box-sizing: border-box;
 }
+html, body {
+    margin: 0;
+    padding: 0;
+}
+.top-bar {
+    margin-top: 0;
+}
+
 
 body {
     font-family: "Segoe UI", "Trebuchet MS", sans-serif;
@@ -12,8 +20,10 @@ body {
 }
 
 body{
-    opacity : 0;
-    transition: opacity 0.4s ease-in-out;
+    opacity: 0;
+    
+    transition: opacity 0.2s ease-out,
+                transform 0.2s ease-out;
 }
 
 body.loaded{
@@ -26,7 +36,7 @@ body.loaded{
     justify-content: space-between;
     align-items: center;
     padding: 0 60px;
-    background-color: #8B0000; 
+    background-color: #323d45; 
 }
 
 .top-bar nav a {
@@ -191,7 +201,7 @@ html {
 }
 
 .footer-ribbon {
-    background-color: #8B0000;
+    background-color: #323d45;
     color: #ffffff;
     padding: 40px 20px;
     text-align: center;
@@ -209,7 +219,7 @@ html {
     background: radial-gradient(
         circle at 50% 100%,
         transparent 20px,
-        #8B0000 21px
+        #323d45 21px
     );
     background-size: 40px 40px;
 }
@@ -292,7 +302,7 @@ textarea {
 .captcha-result {
     margin-top: 8px;
     font-size: 14px;
-    color: #8B0000;
+    color: #323d45;
 }
 .captcha-overlay {
     position: fixed;
@@ -342,10 +352,10 @@ textarea {
 .captcha-result {
     margin-top: 10px;
     font-size: 14px;
-    color: #b00000;
+    color: #323d45;
 }
 .captcha-result {
-    color: red;
+    color: #323d45;
     margin-top: 10px;
     text-align: center;
     font-size: 14px;
@@ -401,7 +411,7 @@ textarea {
 .captcha-result {
     margin-top: 10px;
     font-size: 14px;
-    color: #b00000;
+    color: #323d45;
 }
 
 .speaker-btn {
@@ -411,3 +421,163 @@ textarea {
     font-size: 16px;
     margin-left: 8px;
 }
+.language-selector {
+    position: relative;
+    margin-left: 20px;
+}
+
+#languageBtn {
+    background: transparent;
+    border: 1px solid #ccc;
+    padding: 6px 14px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.language-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #111;
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0;
+    border: 1px solid #333;
+    z-index: 100;
+}
+
+.language-dropdown li {
+    padding: 8px 14px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.language-dropdown li:hover {
+    background: #222;
+}
+
+.language-selector:hover .language-dropdown {
+    display: block;
+}
+
+.language-selector {
+    position: relative;
+    margin-left: 30px;
+    flex-shrink: 0; /* critical */
+}
+
+/* Fixed-width button so text animation doesn't resize layout */
+#languageBtn {
+    width: 90px;                 /* fixed width */
+    text-align: center;
+    background: transparent;
+    border: 1px solid #ccc;
+    padding: 6px 0;
+    color: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;         /* prevents wrap */
+    overflow: hidden;            /* hides overflow during typing */
+}
+
+/* Keep dropdown aligned with button */
+.language-dropdown {
+    min-width: 90px;
+}
+
+/* Language selector inside nav */
+.top-bar nav {
+    display: flex;
+    align-items: center;
+}
+
+/* Language selector spacing */
+.language-selector {
+    position: relative;
+    margin-left: 20px;
+    margin-right: 0px; /* tighter spacing before Guidelines */
+    flex-shrink: 0;
+}
+
+/* Fixed-width button (prevents layout shift) */
+#languageBtn {
+    width: 90px;
+    text-align: center;
+    background: transparent;
+    border: none;
+    padding: 6px 0;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Dropdown box */
+.language-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #111;
+    list-style: none;
+    padding: 6px 0;
+    margin-top: 8px;
+    border: 1px solid #333;
+    z-index: 200;
+    min-width: 120px;
+}
+
+/* Dropdown items – FIXED TEXT COLOR */
+.language-dropdown li {
+    padding: 8px 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    color: #ffffff;              /* critical fix */
+    font-size: 14px;
+}
+
+.language-dropdown li:hover {
+    background-color: #222;
+}
+
+/* Show dropdown on hover */
+.language-selector:hover .language-dropdown {
+    display: block;
+}
+
+/* Ensure nav allows overlay elements */
+.top-bar nav {
+    position: relative;
+    z-index: 1;
+}
+
+/* Dropdown must sit above nav links */
+.language-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;              /* directly below button */
+    left: 0;
+    background-color: #111;
+    list-style: none;
+    padding: 6px 0;
+    margin-top: 0;          /* CRITICAL: remove gap */
+    border: 1px solid #333;
+    z-index: 500;
+    min-width: 120px;
+}
+/* Keep dropdown open when hovering over it */
+.language-selector:hover .language-dropdown,
+.language-dropdown:hover {
+    display: block;
+}
+
+
+/* Ensure dropdown items receive clicks */
+.language-dropdown li {
+    pointer-events: auto;
+}
+
+
