@@ -157,29 +157,56 @@ def analyze_pdf():
         return jsonify({"error": "No file uploaded"}), 400
 
     file = request.files["file"]
-    reader = PyPDF2.PdfReader(file)
 
-    text = ""
-    for page in reader.pages:
-        extracted = page.extract_text()
-        if extracted:
-            text += extracted + "\n"
+    if file.filename == "":
+        return jsonify({"error": "Empty file uploaded"}), 400
 
-    if len(text.strip()) == 0:
+    # Basic file type check
+    if not file.filename.lower().endswith(".pdf"):
         return jsonify({
-            "summary": "The PDF is not text-extractable.",
+            "summary": "Uploaded file is not a PDF.",
             "intent": "Unknown",
             "deadline": "Not found",
             "risk": "Unknown"
         })
 
+    try:
+        reader = PyPDF2.PdfReader(file)
+    except Exception as e:
+        print("PDF READ ERROR:", e)
+        return jsonify({
+            "summary": "The uploaded PDF could not be read. It may be scanned, corrupted, or unsupported.",
+            "intent": "Unknown",
+            "deadline": "Not found",
+            "risk": "Unknown"
+        })
+
+    text = ""
+    for page in reader.pages:
+        try:
+            extracted = page.extract_text()
+            if extracted:
+                text += extracted + "\n"
+        except Exception:
+            continue
+
+    if len(text.strip()) == 0:
+        return jsonify({
+            "summary": "The PDF does not contain readable text.",
+            "intent": "Unknown",
+            "deadline": "Not found",
+            "risk": "Unknown"
+        })
+
+    # TRY AI FIRST
     if OPENROUTER_API_KEY:
         try:
             ai_result = ai_analysis(text)
             return jsonify(ai_result)
         except Exception as e:
-            print("AI failed, falling back:", e)
+            print("AI failed for PDF, falling back:", e)
 
+    # FALLBACK
     deadline = extract_deadline(text)
     intent, summary, risk = rule_based_analysis(text)
 
@@ -189,6 +216,7 @@ def analyze_pdf():
         "deadline": deadline,
         "risk": risk
     })
+
 
 if __name__ == "__main__":
     app.run(debug=True)

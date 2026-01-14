@@ -34,8 +34,18 @@
                   placeholder="Paste legal notice text here..."></textarea>
 
         <div class="file-input">
-            <input type="file" id="pdfFile" accept=".pdf">
+            <input type="file" id="pdfFile" accept=".pdf" onchange="onFileSelected()">
+            <button
+                type="button"
+                id="removeFileBtn"
+                class="remove-file-btn"
+                onclick="clearSelectedFile()"
+                style="display:none;"
+            >
+                Remove Selected File
+            </button>
         </div>
+
 
         
         <button class="primary-btn" onclick="openCaptcha()">Analyze</button>
@@ -128,38 +138,47 @@ async function analyzeNotice() {
     const text = document.getElementById("noticeText").value.trim();
     const file = document.getElementById("pdfFile").files[0];
 
-    let response;
+    try {
+        let response;
 
-    if (file) {
-        const formData = new FormData();
-        formData.append("file", file);
+        if (file) {
+            const formData = new FormData();
+            formData.append("file", file);
 
-        response = await fetch("http://127.0.0.1:5000/analyze-pdf", {
-            method: "POST",
-            body: formData
-        });
-    } else if (text.length > 0) {
-        response = await fetch("http://127.0.0.1:5000/analyze", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ text })
-        });
-    } else {
-        alert("Please paste text or upload a PDF.");
-        return;
+            response = await fetch("http://127.0.0.1:5000/analyze-pdf", {
+                method: "POST",
+                body: formData
+            });
+
+        } else if (text.length > 0) {
+            response = await fetch("http://127.0.0.1:5000/analyze", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ text })
+            });
+
+        } else {
+            alert("Please paste text or upload a PDF.");
+            return;
+        }
+
+        const data = await response.json();
+        sessionStorage.setItem("analysisResult", JSON.stringify(data));
+        window.location.href = "results.html";
+
+    } catch (error) {
+        alert("Something went wrong while analyzing. Please try again.");
+        console.error(error);
+
+    } finally {
+        document.getElementById("loadingOverlay").style.display = "none";
+        stopLoadingPhrases();
     }
-
-    const data = await response.json();
-
-    sessionStorage.setItem("analysisResult", JSON.stringify(data));
-    document.getElementById("loadingOverlay").style.display = "none";
-    stopLoadingPhrases();
-    window.location.href = "results.html";
-
 }
 </script>
+
 
 <script>
 window.addEventListener("load", () => {
@@ -170,9 +189,14 @@ window.addEventListener("load", () => {
 <div id="loadingOverlay" class="loading-overlay">
     <div class="loading-modal">
         <div class="loading-icons">
-            <span class="loading-icon">📄</span>
+            
             <span class="loading-icon">🔍</span>
             <span class="loading-icon">⚡</span>
+             <span class="loading-icon">📜</span>
+            <span class="loading-icon">⚙️</span>
+            
+            
+            
         </div>
         <p id="loadingPhrase">Analyzing your document...</p>
     </div>
@@ -201,6 +225,26 @@ window.addEventListener("load", () => {
         clearInterval(phraseInterval);
     }
 </script>
+
+<script>
+function onFileSelected() {
+    const fileInput = document.getElementById("pdfFile");
+    const removeBtn = document.getElementById("removeFileBtn");
+
+    if (fileInput.files.length > 0) {
+        removeBtn.style.display = "inline-block";
+    }
+}
+
+function clearSelectedFile() {
+    const fileInput = document.getElementById("pdfFile");
+    const removeBtn = document.getElementById("removeFileBtn");
+
+    fileInput.value = "";          // clears the file
+    removeBtn.style.display = "none";
+}
+</script>
+
 
 </body>
 </html>
